@@ -32,9 +32,9 @@
             <tr>
                 <td>Number of pallets</td>
                 <td v-for="item in numberOfPallets" :key=item.id>
-                    <input type="text" :value="item">
+                    <input type="text" :value="item" @change="countPallets(item)"> 
                 </td>
-                <td>total <span>{{ totalPallets() }}</span></td>
+                <td>total <span>{{ totalPallets }}</span></td>
             </tr>
             <tr>
                 <td>Dimensions,cm</td>
@@ -121,13 +121,13 @@
 export default {
     data: function(){
         return {
-            numberOfPallets: [5,5,0,0],
+            numberOfPallets: [0,0,0,0],
             totalPallets: 0
         }
     },
     computed: {
-        totalPallets(){
-            return this.numberOfPallets.forEach((item)=>{
+        countPallets: function(value) {
+            return this.numberOfPallets.map((item) => {
                 this.totalPallets += item;
             })
         }
