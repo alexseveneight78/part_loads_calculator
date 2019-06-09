@@ -31,17 +31,17 @@
             </tr>
             <tr>
                 <td>Number of pallets</td>
-                <td v-for="item in numberOfPallets" :key=item.id>
-                    <input type="text" :value="item" @change="countPallets(item)"> 
+                <td v-for="(item,index) in numberOfPallets" :key=item.id>
+                    <input type="number" v-model.number="numberOfPallets[index]">
                 </td>
-                <td>total <span>{{ totalPallets }}</span></td>
+                <td>total <span>{{ totalNumber }}</span></td>
             </tr>
             <tr>
                 <td>Dimensions,cm</td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
+                <td v-for="">
+                  <input type="number" placeholder="length">
+                  <input type="number" placeholder="width">
+                </td>
                 <td>total <span></span></td>
             </tr>
             <tr>
@@ -53,19 +53,17 @@
             </tr>
             <tr>
                 <td>LDM</td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td>total <span></span></td>
+                <td v-for="(item,index) in ladometers">
+                  <input type="number" v-model.number="ladometers[index]">
+                </td>
+                <td>total <span>{{ totalLadometers = totalLadometers < 13.60 ? totalLadometers : 'more than 13.6 ldm' }}</span></td>
             </tr>
-            <tr>
+            <tr ref="w">
                 <td>Weight,kg</td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td>total <span></span></td>
+                <td v-for="(item,index) in weight" :key="item.id">
+                  <input type="number" v-model.number="weight[index]">
+                </td>
+                <td>total <span>{{ totalWeight = totalWeight < 22800 ? totalWeight : 'more than 22.800kg' }}</span></td>
             </tr>
             <tr>
                 <td>ADR</td>
@@ -91,11 +89,10 @@
             </tr>
             <tr>
                 <td>Client price</td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td>total <span></span></td>
+                <td v-for="(item,index) in clientPrice">
+                  <input type="number" v-model.number="clientPrice[index]">
+                </td>
+                <td>total <span>{{ totalClientPrice }}</span></td>
             </tr>
             <tr>
                 <td>Additional costs</td>
@@ -113,7 +110,7 @@
                 <td><input type="text"></td>
                 <td>total <span></span></td>
             </tr>
-        </table>   
+        </table>
     </div>
 </template>
 
@@ -121,15 +118,25 @@
 export default {
     data: function(){
         return {
-            numberOfPallets: [0,0,0,0],
-            totalPallets: 0
+          numberOfPallets: [0,0,0,0],
+          weight: [0,0,0,0],
+          clientPrice: [0,0,0,0],
+          ladometers: [0,0,0,0]
         }
     },
     computed: {
-        countPallets: function(value) {
-            return this.numberOfPallets.map((item) => {
-                this.totalPallets += item;
-            })
+        totalNumber(){
+          return this.numberOfPallets.reduce((accumulator, current) => accumulator + +current)
+        },
+        totalWeight(){
+          console.log(this.$refs.w);
+          return this.weight.reduce((accumulator, current) => accumulator + +current)
+        },
+        totalClientPrice() {
+          return this.clientPrice.reduce((accumulator, current) => accumulator + +current)
+        },
+        totalLadometers(){
+          return this.ladometers.reduce((accumulator, current) => accumulator + +current)
         }
     }
 }
@@ -143,7 +150,7 @@ export default {
 
         tr {
             outline: 1px dotted #ccc;
-            height: 50px;
+            //height: 50px;
 
             td {
                 outline: 1px solid lightseagreen;
