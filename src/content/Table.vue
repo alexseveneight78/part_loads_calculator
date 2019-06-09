@@ -38,11 +38,16 @@
             </tr>
             <tr>
                 <td>Dimensions,cm</td>
-                <td v-for="">
-                  <input type="number" placeholder="length">
-                  <input type="number" placeholder="width">
+                <td v-for="item in 4" :key="item.id">
+                  <input type="checkbox" id="eur1" value="0.4" v-model="checked">
+                    <label for="eur1">120*80</label>
+                  <input type="checkbox" id="eur2" value="0.5" v-model="checked">
+                    <label for="eur2">120*100</label>
+                  <input type="checkbox" id="eur3" value="0.6" v-model="checked">
+                    <label for="eur3">120*120</label>
                 </td>
-                <td>total <span></span></td>
+
+              <td>{{ palletDimensions}}</td>
             </tr>
             <tr>
                 <td>Levels of stackability</td>
@@ -121,7 +126,9 @@ export default {
           numberOfPallets: [0,0,0,0],
           weight: [0,0,0,0],
           clientPrice: [0,0,0,0],
-          ladometers: [0,0,0,0]
+          ladometers: [0,0,0,0],
+          checked: false
+
         }
     },
     computed: {
