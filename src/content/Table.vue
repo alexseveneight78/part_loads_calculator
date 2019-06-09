@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <td>Dimensions,cm</td>
-                <td v-for="item in 4" :key="item.id">
+                <td v-for="(item,index) in 4" :key="item.id" @click="show">
                   <input type="checkbox" id="eur1" value="0.4" v-model="checked">
                     <label for="eur1">120*80</label>
                   <input type="checkbox" id="eur2" value="0.5" v-model="checked">
@@ -63,12 +63,12 @@
                 </td>
                 <td>total <span>{{ totalLadometers = totalLadometers < 13.60 ? totalLadometers : 'more than 13.6 ldm' }}</span></td>
             </tr>
-            <tr ref="w">
+            <tr ref="w" :class="{ bgAlert: isActive }">
                 <td>Weight,kg</td>
                 <td v-for="(item,index) in weight" :key="item.id">
                   <input type="number" v-model.number="weight[index]">
                 </td>
-                <td>total <span>{{ totalWeight = totalWeight < 22800 ? totalWeight : 'more than 22.800kg' }}</span></td>
+                <td>total <span>{{ totalWeight = totalWeight < 22800 ? totalWeight : bgAlert = true }}</span></td>
             </tr>
             <tr>
                 <td>ADR</td>
@@ -123,6 +123,7 @@
 export default {
     data: function(){
         return {
+          isActive: false,
           numberOfPallets: [0,0,0,0],
           weight: [0,0,0,0],
           clientPrice: [0,0,0,0],
@@ -145,6 +146,11 @@ export default {
         totalLadometers(){
           return this.ladometers.reduce((accumulator, current) => accumulator + +current)
         }
+    },
+    methods: {
+      show(){
+        console.log()
+      }
     }
 }
 </script>
@@ -173,4 +179,7 @@ export default {
             }
         }
     }
+  .bgAlert {
+    background-color: indianred;
+  }
 </style>
