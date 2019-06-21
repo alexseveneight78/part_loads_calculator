@@ -101,19 +101,18 @@
             </tr>
             <tr>
                 <td>Additional costs</td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td>total <span></span></td>
+                <td v-for="(item,index) in addCosts">
+                  <input type="number" v-model.number="addCosts[index]"></td>
+                <td>total <span>{{ additionalCosts }}</span></td>
             </tr>
             <tr>
                 <td>Income,EUR</td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td>total <span></span></td>
+                <td v-for="(item,index) in income">
+                  <span>{{ income[index] = clientPrice[index] - addCosts[index]}}</span>
+                </td>
+              <td>total
+                <span v-model="finalIncome">{{ finalIncome = totalClientPrice - additionalCosts }}</span>
+              </td>
             </tr>
         </table>
     </div>
@@ -128,6 +127,9 @@ export default {
           weight: [0,0,0,0],
           clientPrice: [0,0,0,0],
           ladometers: [0,0,0,0],
+          addCosts: [0,0,0,0],
+          income: [0,0,0,0],
+          finalIncome: 0,
           checked: false
 
         }
@@ -145,6 +147,9 @@ export default {
         },
         totalLadometers(){
           return this.ladometers.reduce((accumulator, current) => accumulator + +current).toFixed(2);
+        },
+        additionalCosts(){
+          return this.addCosts.reduce((accumulator, current) => accumulator + +current).toFixed(2);
         }
     },
     methods: {
@@ -178,8 +183,12 @@ export default {
                 }
             }
         }
+      tr:hover {
+        background-color: #ccc;
+      }
     }
   .bgAlert {
     background-color: indianred;
+    transition: all ease 2s;
   }
 </style>
