@@ -56,19 +56,19 @@
                 <td><input type="text"></td>
                 <td><input type="text"></td>
             </tr>
-            <tr>
+            <tr :class="{ 'bgAlert': totalLadometers > 13.6 ? true : false }">
                 <td>LDM</td>
                 <td v-for="(item,index) in ladometers">
                   <input type="number" v-model.number="ladometers[index]">
                 </td>
-                <td>total <span>{{ totalLadometers = totalLadometers < 13.60 ? totalLadometers : 'more than 13.6 ldm' }}</span></td>
+                <td>total <span>{{ totalLadometers = totalLadometers <= 13.60 ? totalLadometers : 'more than 13.6 ldm' }}</span></td>
             </tr>
-            <tr ref="w" :class="{ bgAlert: isActive }">
+            <tr ref="w" :class="{ 'bgAlert': totalWeight > 22800 ? true : false }">
                 <td>Weight,kg</td>
                 <td v-for="(item,index) in weight" :key="item.id">
                   <input type="number" v-model.number="weight[index]">
                 </td>
-                <td>total <span>{{ totalWeight = totalWeight < 22800 ? totalWeight : bgAlert = true }}</span></td>
+                <td>total <span>{{ totalWeight = totalWeight <= 22800 ? totalWeight : 'more than 22 800 kg' }}</span></td>
             </tr>
             <tr>
                 <td>ADR</td>
@@ -137,14 +137,14 @@ export default {
           return this.numberOfPallets.reduce((accumulator, current) => accumulator + +current)
         },
         totalWeight(){
-          console.log(this.$refs.w);
+          //console.log(this.$refs.w);
           return this.weight.reduce((accumulator, current) => accumulator + +current)
         },
         totalClientPrice() {
           return this.clientPrice.reduce((accumulator, current) => accumulator + +current)
         },
         totalLadometers(){
-          return this.ladometers.reduce((accumulator, current) => accumulator + +current)
+          return this.ladometers.reduce((accumulator, current) => accumulator + +current).toFixed(2);
         }
     },
     methods: {
