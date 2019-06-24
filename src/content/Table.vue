@@ -38,16 +38,14 @@
             </tr>
             <tr>
                 <td>Dimensions,cm</td>
-                <td v-for="(item,index) in 4" :key="item.id" @click="show">
-                  <input type="checkbox" id="eur1" value="0.4" v-model="checked">
+                <td v-for="(item,index) in checkedDimensions" :key="index">
+                  <input type="checkbox" id="eur1" value="0.4" v-model="item.a = true ? calcLdm : false">
                     <label for="eur1">120*80</label>
-                  <input type="checkbox" id="eur2" value="0.5" v-model="checked">
+                  <input type="checkbox" id="eur2" value="0.5" v-model="item.b">
                     <label for="eur2">120*100</label>
-                  <input type="checkbox" id="eur3" value="0.6" v-model="checked">
+                  <input type="checkbox" id="eur3" value="0.6" v-model="item.c">
                     <label for="eur3">120*120</label>
                 </td>
-
-              <td>{{ palletDimensions}}</td>
             </tr>
             <tr>
                 <td>Levels of stackability</td>
@@ -59,7 +57,7 @@
             <tr :class="{ 'bgAlert': totalLadometers > 13.6 ? true : false }">
                 <td>LDM</td>
                 <td v-for="(item,index) in ladometers">
-                  <input type="number" v-model.number="ladometers[index]">
+                  <input type="number" v-model.number="ladometers[index] = calcLdm || ladometers[index]">
                 </td>
                 <td>total <span>{{ totalLadometers = totalLadometers <= 13.60 ? totalLadometers : 'more than 13.6 ldm' }}</span></td>
             </tr>
@@ -130,7 +128,13 @@ export default {
           addCosts: [0,0,0,0],
           income: [0,0,0,0],
           finalIncome: 0,
-          checked: false
+          checked: false,
+          checkedDimensions: [
+            { a: false, b: false, c: false },
+            { a: false, b: false, c: false },
+            { a: false, b: false, c: false },
+            { a: false, b: false, c: false }
+          ]
 
         }
     },
@@ -150,12 +154,33 @@ export default {
         },
         additionalCosts(){
           return this.addCosts.reduce((accumulator, current) => accumulator + +current).toFixed(2);
-        }
-    },
-    methods: {
-      show(){
-        console.log()
-      }
+        },
+/*        calcLdm(){
+          return this.checkedDimensions.map((item,index) => {
+            for(let key in item) {
+              if(item[key] === true && key === 'a') {
+                ladometers[index] = numberOfPallets[index] * 0.4;
+              }
+              if(item[key] === true && key === 'b') {
+                ladometers[index] = numberOfPallets[index] * 0.5;
+              }
+              if(item[key] === true && key === 'c') {
+                ladometers[index] = numberOfPallets[index] * 0.6;
+              }
+            }
+          })
+        }*/
+/*        ldmCalculation:
+          // step 1. get numberOfPallets
+            get: function(){
+              return this.numberOfPallets.map((item) => {
+
+              })
+            }
+          // step 2. check dimension of pallets and show an appropriate value
+          // step 3. multiply number of pallets and an appropriate value of pallets to get ldm
+        }*/
+
     }
 }
 </script>
