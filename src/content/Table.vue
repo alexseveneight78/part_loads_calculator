@@ -143,8 +143,8 @@ export default {
           return this.numberOfPallets.reduce((accumulator, current) => accumulator + +current)
         },
         totalWeight(){
-          //console.log(this.$refs.w);
           return this.weight.reduce((accumulator, current) => accumulator + +current)
+          /*Vmodel должен иметь сеттер  меняй на :value (или что у тебя там) или пиши сеттер, если нужно "менять" кампутед*/
         },
         totalClientPrice() {
           return this.clientPrice.reduce((accumulator, current) => accumulator + +current)
