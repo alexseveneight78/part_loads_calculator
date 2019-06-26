@@ -39,7 +39,7 @@
             <tr>
                 <td>Dimensions,cm</td>
                 <td v-for="(item,index) in checkedDimensions" :key="index">
-                  <input type="checkbox" id="eur1" value="0.4" v-model="item.a = true ? calcLdm : false">
+                  <input type="checkbox" id="eur1" value="0.4" v-model="item.a">
                     <label for="eur1">120*80</label>
                   <input type="checkbox" id="eur2" value="0.5" v-model="item.b">
                     <label for="eur2">120*100</label>
@@ -56,12 +56,12 @@
             </tr>
             <tr :class="{ 'bgAlert': totalLadometers > 13.6 ? true : false }">
                 <td>LDM</td>
-                <td v-for="(item,index) in ladometers">
-                  <input type="number" v-model.number="ladometers[index] = calcLdm || ladometers[index]">
+                <td v-for="(item,index) in ladometers" :key="item.id">
+                  <input type="number" v-model.number="ladometers[index]">
                 </td>
                 <td>total <span>{{ totalLadometers = totalLadometers <= 13.60 ? totalLadometers : 'more than 13.6 ldm' }}</span></td>
             </tr>
-            <tr ref="w" :class="{ 'bgAlert': totalWeight > 22800 ? true : false }">
+            <tr :class="{ 'bgAlert': totalWeight > 22800 ? true : false }">
                 <td>Weight,kg</td>
                 <td v-for="(item,index) in weight" :key="item.id">
                   <input type="number" v-model.number="weight[index]">
@@ -142,34 +142,38 @@ export default {
         totalNumber(){
           return this.numberOfPallets.reduce((accumulator, current) => accumulator + +current)
         },
-        totalWeight(){
-          return this.weight.reduce((accumulator, current) => accumulator + +current)
-          /*Vmodel должен иметь сеттер  меняй на :value (или что у тебя там) или пиши сеттер, если нужно "менять" кампутед*/
+        totalWeight: {
+          get(){
+            return this.weight.reduce((accumulator, current) => accumulator + +current)
+            /*Vmodel должен иметь сеттер  меняй на :value (или что у тебя там) или пиши сеттер, если нужно "менять" кампутед*/
+          },
+          set(){
+            return this.weight.reduce((accumulator, current) => accumulator + +current)
+            /*Vmodel должен иметь сеттер  меняй на :value (или что у тебя там) или пиши сеттер, если нужно "менять" кампутед*/
+          }        
         },
-        totalClientPrice() {
-          return this.clientPrice.reduce((accumulator, current) => accumulator + +current)
+        totalClientPrice: {
+          get(){
+            return this.clientPrice.reduce((accumulator, current) => accumulator + +current)
+          },
+          set(){
+            return this.clientPrice.reduce((accumulator, current) => accumulator + +current)
+          }
         },
-        totalLadometers(){
-          return this.ladometers.reduce((accumulator, current) => accumulator + +current).toFixed(2);
+        totalLadometers: {
+          get(){
+            return this.ladometers.reduce((accumulator, current) => accumulator + +current).toFixed(2);
+          },
+          set(){
+            return this.ladometers.reduce((accumulator, current) => accumulator + +current).toFixed(2);
+          }
         },
         additionalCosts(){
           return this.addCosts.reduce((accumulator, current) => accumulator + +current).toFixed(2);
         },
-/*        calcLdm(){
-          return this.checkedDimensions.map((item,index) => {
-            for(let key in item) {
-              if(item[key] === true && key === 'a') {
-                ladometers[index] = numberOfPallets[index] * 0.4;
-              }
-              if(item[key] === true && key === 'b') {
-                ladometers[index] = numberOfPallets[index] * 0.5;
-              }
-              if(item[key] === true && key === 'c') {
-                ladometers[index] = numberOfPallets[index] * 0.6;
-              }
-            }
-          })
-        }*/
+        calcLdm(){
+          return this.ladometers[index];
+        }
 /*        ldmCalculation:
           // step 1. get numberOfPallets
             get: function(){
