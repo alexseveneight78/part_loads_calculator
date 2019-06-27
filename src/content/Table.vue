@@ -57,7 +57,7 @@
             <tr :class="{ 'bgAlert': totalLadometers > 13.6 ? true : false }">
                 <td>LDM</td>
                 <td v-for="(item,index) in ladometers" :key="item.id">
-                  <input type="number" v-model.number="ladometers[index]">
+                  <input type="number" v-model.number="ladometers[index]">{{ calcLdm }}
                 </td>
                 <td>total <span>{{ totalLadometers = totalLadometers <= 13.60 ? totalLadometers : 'more than 13.6 ldm' }}</span></td>
             </tr>
@@ -172,19 +172,17 @@ export default {
           return this.addCosts.reduce((accumulator, current) => accumulator + +current).toFixed(2);
         },
         calcLdm(){
-          return this.ladometers[index];
+          return this.ladometers.map((item,index) => {
+            let dimensions = this.checkedDimensions;
+            dimensions.map((item,index) => {
+              for(let key in item) {
+                if(item[key] === true && key === 'a') {
+                  this.ladometers[index] = this.numberOfPallets[index] * 0.4;
+                }
+              } 
+            })
+          })
         }
-/*        ldmCalculation:
-          // step 1. get numberOfPallets
-            get: function(){
-              return this.numberOfPallets.map((item) => {
-
-              })
-            }
-          // step 2. check dimension of pallets and show an appropriate value
-          // step 3. multiply number of pallets and an appropriate value of pallets to get ldm
-        }*/
-
     }
 }
 </script>
